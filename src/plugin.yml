@@ -1,0 +1,18 @@
+name: BlockShuffle
+version: 0.1
+author: Maciej Cuper
+description: Minecraft, but BlockShuffle xd
+main: me.cuper.blockshuffle.Main
+
+commands:
+  test:
+    description: Opis komendy.
+    usage: /test
+  longer:
+    description: opis
+    usage: |
+      /longer 1
+      /longer 2
+  testnew:
+    description: testnew
+    usage: testnew
