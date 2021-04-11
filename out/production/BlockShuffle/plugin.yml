@@ -8,11 +8,18 @@ commands:
   test:
     description: Opis komendy.
     usage: /test
+  blockshuffle:
+    description: Commands used to operate blockshuffle game.
+    usage: |
+      /blockshuffle join - adds player executing to the game
+      /blockshuffle add <player> - adds <player> to the game
+      /blockshuffle time - returns time for compliting quest
+      /blockshuffle time <seconds> - changes game time ( in SECONDS )
+      /blockshuffle start - start blockshuffle game.
+      /blockshuffle end - manually ends blockshuffle game.
+      /blockshuffle list - print all players added to the game
   longer:
     description: opis
     usage: |
       /longer 1
       /longer 2
-  testnew:
-    description: testnew
-    usage: testnew
