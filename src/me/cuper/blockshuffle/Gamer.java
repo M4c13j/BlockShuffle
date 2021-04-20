@@ -7,6 +7,7 @@ import java.util.UUID;
 public class Gamer {
     public UUID id;
     public int score;
+    public boolean active;
     public Block block;
 
     public Gamer( UUID _id ) {

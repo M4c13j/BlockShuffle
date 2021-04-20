@@ -74,7 +74,7 @@ public class Shuffle implements CommandExecutor {
 
             // prepare and start the game
             else if (args[0].equalsIgnoreCase("start")) {
-                // TODO: klasa do wybierania bloków,
+
             }
 
             // end the game manually

@@ -2,9 +2,11 @@ package me.cuper.blockshuffle;
 
 import me.cuper.blockshuffle.commands.Commands;
 import me.cuper.blockshuffle.commands.Shuffle;
+import me.cuper.blockshuffle.events.BlockTask;
 import me.cuper.blockshuffle.events.eventHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -33,9 +35,11 @@ public class Main extends JavaPlugin {
         // ------ EVENTS ----
         getServer().getPluginManager().registerEvents(new eventHandler(),this);
 
+        // ------ TASKS ----
+        BukkitTask background = new BlockTask().runTaskTimerAsynchronously(this,0,10);
+
         // ------- MISC -----
         logger.info( "BlockShuffle plugin has been enabled!");
-
     }
 
     @Override
