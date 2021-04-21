@@ -9,10 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
@@ -20,23 +17,24 @@ public class Main extends JavaPlugin {
 
     // variables
     public boolean gameState = false;
-    public int time = 600;
+    public int time = 300;
+    public int refreshTime = 5;
 
     // Player list
-    public Set<Gamer> players = new HashSet<>();
+    public ArrayList<Gamer> players = new ArrayList<Gamer>();
 
     @Override
     public void onEnable() {
         // ------ COMMANDS -------
         Commands commands = new Commands();
         getCommand("test").setExecutor(commands);
-        getCommand("blockshuffle").setExecutor( new Shuffle() );
+        getCommand("blockshuffle").setExecutor( new Shuffle(this) );
 
         // ------ EVENTS ----
         getServer().getPluginManager().registerEvents(new eventHandler(),this);
 
         // ------ TASKS ----
-        BukkitTask background = new BlockTask().runTaskTimerAsynchronously(this,0,10);
+        BukkitTask blockCheckingTask = new BlockTask(this).runTaskTimerAsynchronously(this,0,refreshTime);
 
         // ------- MISC -----
         logger.info( "BlockShuffle plugin has been enabled!");
@@ -47,11 +45,11 @@ public class Main extends JavaPlugin {
         return;
     }
 
-    // add player to set by id
+    // add player to list by id
     public void addPlayer(UUID id) {
         players.add( new Gamer(id) );
     }
-    // remove player from set by id
+    // remove player from list by id
     public boolean removePlayer( UUID id ) {
         for( Gamer gamer : players ) {
             if(gamer.id == id) {

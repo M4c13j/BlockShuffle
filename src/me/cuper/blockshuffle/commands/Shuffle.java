@@ -4,6 +4,7 @@ import me.cuper.blockshuffle.Gamer;
 import me.cuper.blockshuffle.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,7 +13,11 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class Shuffle implements CommandExecutor {
-    public final Main plugin = Main.getPlugin(Main.class);
+    public Main plugin;// = Main.getPlugin(Main.class);
+
+    public Shuffle( Main main ) {
+        this.plugin = main;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender , Command cmd , String label , String[] args) {
@@ -20,7 +25,7 @@ public class Shuffle implements CommandExecutor {
         if( cmd.getName().equalsIgnoreCase("blockshuffle")) {
             if (!(sender instanceof Player)) {
                 sender.sendMessage("Only player can execute this command you muffin head!");
-                return false;
+                return true;
             } else if( args.length==0 ) return false;
 
             Player p = (Player) sender;
@@ -60,10 +65,10 @@ public class Shuffle implements CommandExecutor {
             // return time or change it
             else if (args[0].equalsIgnoreCase("time")) {
                 int newTime = plugin.time;
-                if( args.length==1 ) info(p, "Time for the game is (in seconds): " + ChatColor.BOLD+""+ChatColor.GREEN + newTime);
+                if( args.length==1 ) info(p, "Time for the game is (20 = 1second): " + ChatColor.BOLD+""+ChatColor.GREEN + newTime);
                 else if( args.length>1 ){
                     try {
-                        newTime = Integer.parseInt(args[1]);
+                        newTime = Integer.parseInt(args[2]);
                     } catch (NumberFormatException e ) {
                         error(p,"Time must be an integer!");
                     }
@@ -74,12 +79,41 @@ public class Shuffle implements CommandExecutor {
 
             // prepare and start the game
             else if (args[0].equalsIgnoreCase("start")) {
+                for(int i=0;i<plugin.players.size();i++) {
+                    Gamer gamer = plugin.players.get(i);
 
+                    gamer.active = true;
+                    gamer.score = 0;
+                    gamer.timeLeft = plugin.time;
+                    gamer.genNewBlock();
+
+                    plugin.players.set(i,gamer);
+                }
+
+                plugin.gameState = true;
+                Bukkit.broadcastMessage(ChatColor.BOLD+""+ChatColor.BLUE+"BlockShuffle game has started!");
             }
 
             // end the game manually
             else if (args[0].equalsIgnoreCase("end")) {
+                plugin.gameState = false;
 
+                for(int i=0;i<plugin.players.size();i++) {
+                    Gamer gamer = plugin.players.get(i);
+                    gamer.active = false;
+                    plugin.players.set(i,gamer);
+                }
+            }
+
+            // skip the actual block when it is hard or bugged
+            else if ( args[0].equalsIgnoreCase("skip") ) {
+                for(int i=0;i<plugin.players.size();i++) {
+                    Gamer gamer = plugin.players.get(i);
+
+                    if( gamer.id == p.getUniqueId() ) gamer.genNewBlock();
+
+                    plugin.players.set(i,gamer);
+                }
             }
         }
         return true;

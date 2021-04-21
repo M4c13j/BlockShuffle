@@ -14,10 +14,11 @@ commands:
       /blockshuffle join - adds player executing to the game
       /blockshuffle add <player> - adds <player> to the game
       /blockshuffle time - returns time for compliting quest
-      /blockshuffle time <seconds> - changes game time ( in SECONDS )
+      /blockshuffle time <ticks> - changes game time ( 20 ticks = 1 second )
       /blockshuffle start - start blockshuffle game.
       /blockshuffle end - manually ends blockshuffle game.
       /blockshuffle list - print all players added to the game
+      /blockshuffle skip - generate new block if something went wrong. Use only in special cases.
   longer:
     description: opis
     usage: |
